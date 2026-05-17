@@ -14,8 +14,6 @@ int main(){
 
     window = glfwCreateWindow(640, 480, "My Window", NULL, NULL);
 
-    glClearColor(0.25f, 0.5f, 0.75f, 1.0f);
-
     if (!window) {
         const char* desc = "";
         int code = glfwGetError(&desc);
@@ -25,6 +23,14 @@ int main(){
     }
 
     glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+    glfwTerminate();
+    return -1;
+    }
+    
+    glClearColor(0.75f, 0.5f, 0.75f, 1.0f);
     std::cout << "GLFW window created and context is current" << std::endl;
     // ensure the window is shown and try to make it floating (on top)
     glfwShowWindow(window);
@@ -33,6 +39,8 @@ int main(){
     while (!glfwWindowShouldClose(window)) {
         // show the window and process events
         glfwPollEvents();
+
+        glClear(GL_COLOR_BUFFER_BIT);
         
         glfwSwapBuffers(window);
     }
